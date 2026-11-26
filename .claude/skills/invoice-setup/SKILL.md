@@ -51,10 +51,15 @@ Nothing else works without it. Try to open a tab with the Playwright browser too
 6. Anything special about this client: free text, saved as `notes`.
 7. Ask "Add another client?".
 
-## Part 4 - Products (no questions)
-Don't ask about products. Tell the user how it works:
-"Each month I create one product per client in e-fiskalizimi: name `<Client> - <Albanian month> - <year>` (e.g. `Acme - Nentor - 2026`), type Sherbim (service), unit Cope, description `Sherbime IT`, price = the month's total in Lek, quantity 1. If you ever want this done differently, just tell me 'change how products are created'."
-If they ask for a change, save it in `portal_defaults.product` or as a client `product` override.
+## Part 4 - Portal defaults (tell, don't ask)
+Don't ask about these. Write them to `portal_defaults` with the values from `config.example.json`, and tell the user once:
+"I use a proven setup for the portal, so you don't have to decide anything here:
+- Invoice type: Non-cash
+- Buyer ID type: foreign subject (NIPT subjekt i huaj)
+- Payment method: Llogari e transaksionit
+- Product, one per client each month: `<Client> - <Albanian month> - <year>` (e.g. `Acme - Nentor - 2026`), type Sherbim (service), unit Cope, description `Sherbime IT`, price = the month's total in Lek, quantity 1
+All of these are configurable. If you ever want something different, just tell me (e.g. 'change how products are created')."
+If they ask for a change (now or later), update `portal_defaults` or add a per-client override.
 
 ## Part 5 - Write and confirm
 - Write `~/.albanian-invoices/config.json` in the shape of `config.example.json` (in the `albanian-invoices` skill folder). Set `"first_run": true`.

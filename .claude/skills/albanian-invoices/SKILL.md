@@ -41,12 +41,13 @@ All personal data (clients, amounts, fees, date rules) is in `~/.albanian-invoic
 2. **Product** (Lista e produkteve): name `<product_prefix> - <Albanian month> - <year>`; Albanian months: Janar, Shkurt, Mars, Prill, Maj, Qershor, Korrik, Gusht, Shtator, Tetor, Nentor, Dhjetor. Type Sherbim, unit Cope, description `Sherbime IT`, price = ALL amount (dot decimals). Use `portal_defaults.product` / client `product` overrides if present.
    - Product already exists: open it and compare the price; if it differs, ASK before Modifiko > Ruaj.
 3. **Invoice** (Lesho fature):
-   - Tipi i fatures: ALWAYS **Non-cash** (the portal's default is Cash; change it).
-   - NIPT/NID i bleresit dropdown: "Numri Personal i Identifikimit/NIPT subjekt i huaj"; then the buyer ID, name, country, city and address from the client.
+   Values in `portal_defaults` are opinionated defaults: use them as configured and don't ask about them. If one is missing, use the default shown here.
+   - Tipi i fatures: `portal_defaults.invoice_type`, default **Non-cash** (the portal itself starts on Cash; change it).
+   - NIPT/NID i bleresit dropdown: `portal_defaults.buyer_id_type`, default "Numri Personal i Identifikimit/NIPT subjekt i huaj"; then the buyer ID, name, country, city and address from the client.
    - Data e pageses / Data e furnizimit: from the client's date rules.
    - Valute: `portal_currency_label`; Kursi i kembimit with COMMA decimals (e.g. 81,79).
    - Shto artikujt: search the product name, click it (qty 1, no discount).
-   - Shto menyren e pageses: Metoda e pageses is ALWAYS **Llogari e transaksionit**. The amount fills in automatically. Konfirmo.
+   - Shto menyren e pageses: Metoda e pageses = `portal_defaults.payment_method`, default **Llogari e transaksionit**. The amount fills in automatically. Konfirmo.
 4. **Validate (mandatory before hand-off)**:
    - "Vlera totale ne monedhe" MUST equal **expected** (what the user receives in the bank account). Example: earns 3000 USD, fee 10 USD → must show 2990,00.
    - Portal LEK total MUST equal the calculated ALL amount.

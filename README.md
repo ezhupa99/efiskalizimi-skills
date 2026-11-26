@@ -40,7 +40,7 @@ Tell Claude **"set up my invoices"**. It will:
 4. ask whether you pay a transfer fee (it's deducted, so the invoice matches what reaches your bank),
 5. save everything to `~/.albanian-invoices/config.json` on your computer. That file is never shared.
 
-Products are created in a fixed way (`Client - Month - Year`, service, `Sherbime IT`). To change that later, tell Claude "change how products are created".
+Portal choices follow an opinionated best practice, so you don't have to decide anything: invoice type Non-cash, payment method Llogari e transaksionit, one product per client per month (`Client - Month - Year`, service, `Sherbime IT`). Everything is configurable. To change something later, tell Claude (e.g. "change how products are created").
 
 ## Every month
 1. Log in to e-fiskalizimi in your browser.
