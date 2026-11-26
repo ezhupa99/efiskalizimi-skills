@@ -15,7 +15,7 @@ Go step by step, one topic at a time. Never invent values: if the user doesn't k
    - Works: continue.
    - No browser tools at all: the Playwright MCP server isn't configured (common when the skills were installed with `npx skills add`).
      1. Check Node.js: `node -v`. Missing: ask the user to install the LTS version from https://nodejs.org.
-     2. Ask the user to install the "Playwright MCP Bridge" extension in Chrome or Edge (https://github.com/microsoft/playwright-mcp) and to set its token as the `PLAYWRIGHT_MCP_EXTENSION_TOKEN` environment variable themselves. Never ask them to paste the token into chat.
+     2. Ask the user to install the "Playwright Extension" in Chrome or Edge from the Chrome Web Store: https://chromewebstore.google.com/detail/playwright-extension/mmlmfjhmonkocbjadbfplnigmagldckm (Edge can install Chrome Web Store extensions too), and to set its token as the `PLAYWRIGHT_MCP_EXTENSION_TOKEN` environment variable themselves. Never ask them to paste the token into chat.
      3. With their OK, run `claude mcp add playwright --scope user -- npx -y @playwright/mcp@latest --extension` (Edge users: add `--browser=msedge`). The server inherits the token from the environment.
      4. Ask them to restart Claude Code and run setup again.
    - Tools exist but connecting fails: the extension is missing or disabled, or the token env variable isn't set (a new terminal is needed after `setx`).
@@ -34,7 +34,8 @@ Summarize what passed and what is missing before Part 2.
 
 ### Each client (repeat; ask "Another client?" at the end)
 - Legal name, tax/registration ID, country (as written in the portal dropdown, in Albanian, e.g. "Gjermani", "Shtetet e Bashkuara te Amerikes"), city, address.
-- Billing: fixed monthly / hourly / daily? Currency? Amount or rate?
+- Billing: fixed monthly / hourly / daily? Currency? Fixed amount, or price per hour/day (`unit_price`)?
+- Currency name as shown in the portal's "Valute" dropdown (e.g. "Euro", "Dollar Amerikan"). If unsure, open the dropdown on a new invoice and check, without saving anything.
 - Fees: is a bank/transfer fee deducted from what you receive? Do you invoice the net amount (after fee) or the gross amount in the portal? Default: no fee.
 - Payment date rule (e.g. "end of current month", "20th of next month", "15 days after invoice").
 - Supply date rule (usually "end of current month", i.e. the billing period).

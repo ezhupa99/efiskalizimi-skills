@@ -16,7 +16,7 @@ Optional: it also updates your own Canva invoice for the client and downloads th
 ## What you need
 - [Claude Code](https://claude.com/claude-code)
 - [Node.js](https://nodejs.org) (LTS). Claude needs it for the browser connection.
-- Chrome or Edge with the **Playwright MCP Bridge** extension ([guide](https://github.com/microsoft/playwright-mcp))
+- Chrome or Edge with the **[Playwright Extension](https://chromewebstore.google.com/detail/playwright-extension/mmlmfjhmonkocbjadbfplnigmagldckm)** (open it after installing to copy your token)
 - An e-Albania account with access to [e-fiskalizimi (self-care)](https://efiskalizimi-app.tatime.gov.al/self-care/#/login?returnUrl=%2Fdashboard). You always log in yourself.
 - Optional: a Canva account with your invoice design
 

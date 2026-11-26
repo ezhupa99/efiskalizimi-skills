@@ -29,7 +29,7 @@ All personal data (clients, amounts, fees, date rules) is in `~/.albanian-invoic
 
 ## Calculation (per client)
 - fixed: foreign = `fixed_amount - transfer_fee`
-- hourly/daily: foreign = `quantity * rate - transfer_fee`
+- hourly/daily: foreign = `hours_or_days * unit_price - transfer_fee`
 - `transfer_fee` defaults to 0. Follow the client's config on net vs gross.
 - ALL = foreign x rate (Bank of Albania rate, 2 decimals), rounded to 2 decimals.
 - Show a table: client, currency, foreign amount, rate, ALL, product name, payment date, supply date. Wait for OK.

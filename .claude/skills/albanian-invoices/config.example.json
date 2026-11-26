@@ -43,7 +43,7 @@
       "currency": "USD",
       "portal_currency_label": "Dollar Amerikan",
       "billing": "hourly",
-      "rate": 0,
+      "unit_price": 0,
       "transfer_fee": 0,
       "payment_date_rule": "20th of next month",
       "supply_date_rule": "end of current month",
@@ -54,7 +54,7 @@
         "edit_in_place": true,
         "last_invoice_number": 0,
         "invoice_date_rule": "1st of next month",
-        "amount": "gross (quantity x rate, fee not deducted)",
+        "amount": "gross (hours x unit_price, fee not deducted)",
         "fields": []
       }
     }
