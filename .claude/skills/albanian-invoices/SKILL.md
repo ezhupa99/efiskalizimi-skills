@@ -46,7 +46,7 @@ All personal data (clients, amounts, fees, date rules) is in `~/.albanian-invoic
    - Data e pageses / Data e furnizimit: from the client's date rules.
    - Valute: `portal_currency_label`; Kursi i kembimit with COMMA decimals (e.g. 81,79).
    - Shto artikujt: search the product name, click it (qty 1, no discount).
-   - Shto menyren e pageses: Metoda e pageses is ALWAYS **Llogari transaksioni** (the bank-account/transaction option; pick the option containing "transaksion"). The amount fills in automatically. Konfirmo.
+   - Shto menyren e pageses: Metoda e pageses is ALWAYS **Llogari e transaksionit**. The amount fills in automatically. Konfirmo.
 4. **Validate (mandatory before hand-off)**:
    - "Vlera totale ne monedhe" MUST equal **expected** (what the user receives in the bank account). Example: earns 3000 USD, fee 10 USD → must show 2990,00.
    - Portal LEK total MUST equal the calculated ALL amount.
