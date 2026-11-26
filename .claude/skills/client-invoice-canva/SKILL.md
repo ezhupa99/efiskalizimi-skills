@@ -9,9 +9,10 @@ Reads the client's `client_invoice` block from `~/.albanian-invoices/config.json
 The user is logged in to Canva with their own account; never log in for them.
 
 ## Rules
+- Ask every question with the **AskUserQuestion** tool (free text via its "Other" option).
 - Edit the design named `client_invoice.design_name` in place only if `edit_in_place` is true; otherwise make a copy (ask first).
 - First time for a design: look at it, list the fields you think change monthly, and confirm them with the user. Save them to `client_invoice.fields`.
-- The client invoice may show a different amount than the portal (e.g. gross, without the transfer fee). Follow `client_invoice.amount`.
+- Also ask on the first run: should the client invoice show the gross amount (usual: the client is billed the full amount, and the fee is deducted only on the state invoice) or the net amount? Save it as `client_invoice.amount`.
 - After a successful download, increment `client_invoice.last_invoice_number` in config.
 - The user sends the PDF themselves.
 

@@ -34,16 +34,20 @@ Either way, save the Playwright extension token as an environment variable (keep
 
 ## Setup (one time)
 Tell Claude **"set up my invoices"**. It will:
-1. check the browser connection, and add it for you if it's missing,
-2. open Bank of Albania and the portal (you log in yourself),
-3. ask about your clients (tax ID, address, currency, billing, fees, payment dates) and how you create products,
-4. save your answers to `~/.albanian-invoices/config.json` on your computer. That file is never shared.
+1. **connect to your browser first**, guiding you step by step through Node.js, the Playwright Extension and its token (video guide: coming soon),
+2. open Bank of Albania and e-fiskalizimi (you log in yourself),
+3. ask for each client's details. Attach an invoice you already issued and Claude reads them from it; otherwise you type them in,
+4. ask whether you pay a transfer fee (it's deducted, so the invoice matches what reaches your bank),
+5. save everything to `~/.albanian-invoices/config.json` on your computer. That file is never shared.
+
+Products are created in a fixed way (`Client - Month - Year`, service, `Sherbime IT`). To change that later, tell Claude "change how products are created".
 
 ## Every month
 1. Log in to e-fiskalizimi in your browser.
 2. Tell Claude: **"do my monthly invoices, Example worked 168 hours"**
 3. Check the calculation, then let Claude fill in the portal.
-4. Review the form and click **Regjistro faturen** yourself.
+4. Claude checks that "Vlera totale ne monedhe" equals what you'll receive in your bank (e.g. 3000 USD − 10 USD fee = 2990 USD). It doesn't hand over the invoice until everything matches.
+5. Review the form and click **Regjistro faturen** yourself.
 
 ## Skills
 | Skill | Purpose |

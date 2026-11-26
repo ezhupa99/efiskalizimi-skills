@@ -1,6 +1,6 @@
 ---
 name: invoice-setup
-description: One-time setup for the Albanian freelancer invoice automation - check the prerequisites (browser connection, e-Albania/portal access, optional Canva), then interview the user about their clients, billing and products, and write their personal config.json. Use when the user says "set up my invoices", "configure invoices", or when albanian-invoices finds no config.json. Also use to add/edit a client later.
+description: One-time setup for the Albanian freelancer invoice automation - set up the browser connection (Playwright extension) first, then collect each client's details (from an attached previous invoice when possible) and write the user's personal config.json. Use when the user says "set up my invoices", "configure invoices", or when albanian-invoices finds no config.json. Also use to add/edit a client later.
 ---
 
 # Invoice setup
@@ -8,52 +8,55 @@ description: One-time setup for the Albanian freelancer invoice automation - che
 Goal: make the `albanian-invoices` skill work for THIS user. Everything personal goes to
 `~/.albanian-invoices/config.json` in the user's home folder (Windows: `%USERPROFILE%\.albanian-invoices\config.json`). Create the folder if needed. It stays outside the skill folder so updates never overwrite it and it is never shared. Never write personal data into any SKILL.md.
 
-Go step by step, one topic at a time. Never invent values: if the user doesn't know something, leave it out and say what it's needed for.
+## How to ask
+- Ask every question with the **AskUserQuestion** tool: one topic per question, with clear options. Free-text answers (names, addresses, amounts) go through its "Other" option. Use plain chat only if the tool isn't available.
+- Never invent values. If the user doesn't know something, leave it out and say what it's needed for.
 
-## Part 1 - Prerequisites (check them, don't just ask)
-1. **Browser connection (Playwright MCP + extension).** Try to open a tab with the Playwright browser tools.
-   - Works: continue.
-   - No browser tools at all: the Playwright MCP server isn't configured (common when the skills were installed with `npx skills add`).
-     1. Check Node.js: `node -v`. Missing: ask the user to install the LTS version from https://nodejs.org.
-     2. Ask the user to install the "Playwright Extension" in Chrome or Edge from the Chrome Web Store: https://chromewebstore.google.com/detail/playwright-extension/mmlmfjhmonkocbjadbfplnigmagldckm (Edge can install Chrome Web Store extensions too), and to set its token as the `PLAYWRIGHT_MCP_EXTENSION_TOKEN` environment variable themselves. Never ask them to paste the token into chat.
-     3. With their OK, run `claude mcp add playwright --scope user -- npx -y @playwright/mcp@latest --extension` (Edge users: add `--browser=msedge`). The server inherits the token from the environment.
-     4. Ask them to restart Claude Code and run setup again.
-   - Tools exist but connecting fails: the extension is missing or disabled, or the token env variable isn't set (a new terminal is needed after `setx`).
-2. **Bank of Albania**: open https://www.bankofalbania.org/Tregjet/Kursi_zyrtar_i_kembimit/ and confirm a rate can be read (no login needed). If today's rate isn't published yet, the most recent working day's rate is fine for this check.
-3. **E-invoicing portal ("e-fiskalizimi" / "self-care")**: open https://efiskalizimi-app.tatime.gov.al/self-care/#/login?returnUrl=%2Fdashboard . Tell the user: "Please log in with your own e-Albania credentials. I never log in for you." Wait, then confirm the logged-in menu (Faturat, Te dhenat e tatimpaguesit) is visible.
-4. **Client invoice tool (optional)**: ask: "Do you also send your clients an invoice you make yourself (Canva, Word, Google Docs, an invoicing app...)? This is optional; the main automation is the state portal invoice."
-   - Canva: ask them to log in and open their invoice design; confirm you can see it. The `client-invoice-canva` skill takes care of the rest.
-   - Anything else: note it in config (`client_invoice.tool`), and tell them that part stays manual for now.
+## Part 1 - Browser connection (ALWAYS FIRST)
+Nothing else works without it. Try to open a tab with the Playwright browser tools.
+- **Works**: say so and go to Part 2.
+- **No browser tools, or connecting fails**: walk the user through this guide one step at a time, confirming each step with AskUserQuestion ("Done" / "I'm stuck") before moving on:
+  1. **Node.js**: run `node -v`. If it's missing, ask them to install the LTS version from https://nodejs.org and reopen the terminal.
+  2. **Install the Playwright Extension** in Chrome or Edge: https://chromewebstore.google.com/detail/playwright-extension/mmlmfjhmonkocbjadbfplnigmagldckm (Edge can install Chrome Web Store extensions too). Suggest pinning it to the toolbar.
+  3. **Copy the token**: click the extension icon; it shows a `PLAYWRIGHT_MCP_EXTENSION_TOKEN` value. Copy it. Never ask the user to paste the token into the chat.
+  4. **Save the token** as an environment variable, typed by the user in a terminal:
+     - Windows (PowerShell): `setx PLAYWRIGHT_MCP_EXTENSION_TOKEN "the-token"`
+     - macOS/Linux: add `export PLAYWRIGHT_MCP_EXTENSION_TOKEN="the-token"` to `~/.zshrc` or `~/.bashrc`
+  5. **Connect Claude to the browser**: ask which browser they use (Chrome / Edge), then with their OK run:
+     `claude mcp add playwright --scope user -- npx -y @playwright/mcp@latest --extension` (Edge: append `--browser=msedge`).
+     Skip this if a `playwright` server already exists (`claude mcp list`).
+  6. **Restart**: close Claude Code, open a NEW terminal (so the token loads), start `claude` in the same folder and say "set up my invoices" again. Setup continues here.
+  7. **Test**: open a tab. If the extension asks to allow the connection, the user clicks Allow.
+- If it still fails: the extension is disabled, the token isn't in the environment (a new terminal is needed after `setx`), or the wrong browser flag was used.
 
-Summarize what passed and what is missing before Part 2.
+## Part 2 - Portal access
+1. **Bank of Albania**: open https://www.bankofalbania.org/Tregjet/Kursi_zyrtar_i_kembimit/ and confirm a rate can be read (no login). The last working day's rate is fine if today's isn't published yet.
+2. **E-fiskalizimi ("self-care")**: open https://efiskalizimi-app.tatime.gov.al/self-care/#/login?returnUrl=%2Fdashboard . Tell the user: "Please log in with your own e-Albania credentials. I never log in for you." Wait, then confirm the logged-in menu (Faturat, Te dhenat e tatimpaguesit) is visible.
 
-## Part 2 - Interview
-### About the user (once)
-- Payment method used in the portal (default "Llogari e transaksionit", i.e. bank transfer).
-- Invoice type (default "Non-cash").
+## Part 3 - Clients (repeat per client)
+1. **Ask for a previous invoice first**: "Do you have an invoice you already issued to this client (a PDF or screenshot from e-fiskalizimi, or the invoice you send the client)? Drag it into the chat or give me the file path, and I'll read the details from it."
+   - **Yes**: read it and extract the client's legal name, tax/registration ID, country, city, address, currency, and the amount or price per hour/day. Ignore the user's own details. Show what you found and confirm with AskUserQuestion ("Correct" / "Something is wrong"). Ask only for what's missing.
+   - **No**: ask for each field.
+2. Fields needed:
+   - Legal name, tax/registration ID, country (as written in the portal dropdown, in Albanian, e.g. "Gjermani", "Shtetet e Bashkuara te Amerikes"), city, address.
+   - Billing: fixed monthly / hourly / daily. Currency. Fixed amount, or price per hour/day (`unit_price`).
+   - Currency name in the portal's "Valute" dropdown ("Euro", "Dollar Amerikan"...). Fill it in yourself for EUR/USD; for other currencies, check the dropdown on a new invoice without saving.
+   - Short name for product names (suggest one from the client name, e.g. "Acme").
+3. **Transfer fee**: ask "Do you pay a transfer fee when this client pays you? Most companies make the freelancer pay it." Options: "Yes, I pay it" (then ask the amount, in the client's currency) / "No, the client covers it" / "We split it" (then ask the amount the user pays).
+   - The amount the user pays is ALWAYS deducted from the invoice total: the portal invoice equals what actually arrives in the bank account.
+4. **Dates**: payment date rule (e.g. "end of current month", "20th of next month") and supply date rule (usually "end of current month"). Offer these as options.
+5. **Client invoice** (optional): "Do you also send this client your own invoice (Canva, Word, an invoicing app)?" Options: None / Canva / Other.
+   - Canva: ask them to open the design while logged in to Canva, and confirm you can see it. Ask for the design name, current invoice number, and invoice date rule. The `client-invoice-canva` skill confirms the fields on its first run.
+   - Other: save the tool name; that part stays manual.
+6. Anything special about this client: free text, saved as `notes`.
+7. Ask "Add another client?".
 
-### Each client (repeat; ask "Another client?" at the end)
-- Legal name, tax/registration ID, country (as written in the portal dropdown, in Albanian, e.g. "Gjermani", "Shtetet e Bashkuara te Amerikes"), city, address.
-- Billing: fixed monthly / hourly / daily? Currency? Fixed amount, or price per hour/day (`unit_price`)?
-- Currency name as shown in the portal's "Valute" dropdown (e.g. "Euro", "Dollar Amerikan"). If unsure, open the dropdown on a new invoice and check, without saving anything.
-- Fees: is a bank/transfer fee deducted from what you receive? Do you invoice the net amount (after fee) or the gross amount in the portal? Default: no fee.
-- Payment date rule (e.g. "end of current month", "20th of next month", "15 days after invoice").
-- Supply date rule (usually "end of current month", i.e. the billing period).
-- Short name to use in product names (e.g. "Acme").
-- Anything special about this client (free text, saved as `notes`).
-- Client invoice: none / Canva / other. If Canva: the design name, the current invoice number, the invoice date rule, gross or net amount on the client invoice, and which fields change every month.
+## Part 4 - Products (no questions)
+Don't ask about products. Tell the user how it works:
+"Each month I create one product per client in e-fiskalizimi: name `<Client> - <Albanian month> - <year>` (e.g. `Acme - Nentor - 2026`), type Sherbim (service), unit Cope, description `Sherbime IT`, price = the month's total in Lek, quantity 1. If you ever want this done differently, just tell me 'change how products are created'."
+If they ask for a change, save it in `portal_defaults.product` or as a client `product` override.
 
-### Products (show the default, then ask)
-Say: "This is how I create the monthly product in the portal by default:
-- Name: `<Client short name> - <Albanian month> - <year>`, e.g. `Acme - Nentor - 2026`
-- Type: Sherbim (service), unit: Cope, description: `Sherbime IT`
-- Price: the total for the month in Lek, quantity 1
-
-Does this fit your work, or do you want something different (another description, a reusable product per client, hours as quantity...)?"
-Save their answer in `portal_defaults` (or per client as `product` overrides).
-
-## Part 3 - Write and confirm
-- Write `~/.albanian-invoices/config.json` using `config.example.json` (in the `albanian-invoices` skill folder) as the shape. Keep the keys; add `notes` where useful.
-- Show a readable summary per client (no raw JSON unless they ask) and an example calculation for the current month with a sample rate.
-- Ask them to confirm. Then say: "Next month, open the portal, log in, and tell me 'do my monthly invoices'. The first run is guided: I'll confirm each step with you."
-- Set `"first_run": true` in config.
+## Part 5 - Write and confirm
+- Write `~/.albanian-invoices/config.json` in the shape of `config.example.json` (in the `albanian-invoices` skill folder). Set `"first_run": true`.
+- Show a readable summary per client (no raw JSON unless asked) and a sample calculation, e.g. "3000 USD - 10 USD fee = 2990 USD on the invoice".
+- Confirm with AskUserQuestion. Then say: "When you want to invoice, open e-fiskalizimi, log in, and tell me 'do my monthly invoices'. The first run is guided: I'll confirm each step with you."
