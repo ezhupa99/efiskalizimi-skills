@@ -1,0 +1,62 @@
+{
+  "_note": "Shape only. The invoice-setup skill writes the real file to ~/.albanian-invoices/config.json. Never share that file.",
+  "first_run": true,
+  "portal_defaults": {
+    "invoice_type": "Non-cash",
+    "buyer_id_type": "Numri Personal i Identifikimit/NIPT subjekt i huaj",
+    "payment_method": "Llogari e transaksionit",
+    "product": {
+      "name_pattern": "<product_prefix> - <Albanian month> - <year>",
+      "type": "Sherbim",
+      "unit": "Cope",
+      "description": "Sherbime IT",
+      "quantity": 1
+    }
+  },
+  "clients": [
+    {
+      "id": "acme",
+      "name": "Acme Ltd",
+      "product_prefix": "Acme",
+      "buyer_id": "<tax/registration id>",
+      "country": "Gjermani",
+      "city": "<city>",
+      "address": "<street address>",
+      "currency": "EUR",
+      "portal_currency_label": "Euro",
+      "billing": "fixed",
+      "fixed_amount": 0,
+      "transfer_fee": 0,
+      "payment_date_rule": "end of current month",
+      "supply_date_rule": "end of current month",
+      "notes": "",
+      "client_invoice": { "tool": "none" }
+    },
+    {
+      "id": "example",
+      "name": "Example Inc",
+      "product_prefix": "Example",
+      "buyer_id": "<tax/registration id>",
+      "country": "Shtetet e Bashkuara te Amerikes",
+      "city": "<city>",
+      "address": "<street address>",
+      "currency": "USD",
+      "portal_currency_label": "Dollar Amerikan",
+      "billing": "hourly",
+      "rate": 0,
+      "transfer_fee": 0,
+      "payment_date_rule": "20th of next month",
+      "supply_date_rule": "end of current month",
+      "notes": "",
+      "client_invoice": {
+        "tool": "canva",
+        "design_name": "<your Canva design name>",
+        "edit_in_place": true,
+        "last_invoice_number": 0,
+        "invoice_date_rule": "1st of next month",
+        "amount": "gross (quantity x rate, fee not deducted)",
+        "fields": []
+      }
+    }
+  ]
+}

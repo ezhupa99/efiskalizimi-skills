@@ -1,0 +1,9 @@
+# Personal data - never commit
+.claude/skills/*/config.json
+.claude/settings.local.json
+.playwright-mcp/
+screenshots/
+output/
+*.pdf
+*.png
+.env
