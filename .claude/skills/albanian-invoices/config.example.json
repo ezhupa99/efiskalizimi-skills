@@ -1,5 +1,5 @@
 {
-  "_note": "Shape only. The invoice-setup skill writes the real file to ~/.albanian-invoices/config.json. Never share that file.",
+  "_note": "Shape only. The invoice-setup skill writes the real file to .albanian-invoices/config.json (project folder for project-level skills, home folder for user-level skills). Never share that file.",
   "first_run": true,
   "portal_defaults": {
     "invoice_type": "Non-cash",

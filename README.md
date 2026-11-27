@@ -38,7 +38,7 @@ Tell Claude **"set up my invoices"**. It will:
 2. open Bank of Albania and e-fiskalizimi (you log in yourself),
 3. ask for each client's details. Attach an invoice you already issued and Claude reads them from it; otherwise you type them in,
 4. ask whether you pay a transfer fee (it's deducted, so the invoice matches what reaches your bank),
-5. save everything to `~/.albanian-invoices/config.json` on your computer. That file is never shared.
+5. save everything to `.albanian-invoices/config.json` on your computer: in the folder where Claude is running if you installed the skills in that project, or in your home folder (`~/.albanian-invoices/`) if you installed them at user level. That file is never shared.
 
 Portal choices follow an opinionated best practice, so you don't have to decide anything: invoice type Non-cash, payment method Llogari e transaksionit, one product per client per month (`Client - Month - Year`, service, `Sherbime IT`). Everything is configurable. To change something later, tell Claude (e.g. "change how products are created").
 

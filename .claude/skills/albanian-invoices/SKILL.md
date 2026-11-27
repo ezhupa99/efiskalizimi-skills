@@ -5,7 +5,8 @@ description: Prepare monthly freelancer invoices for foreign clients in the Alba
 
 # Albanian freelancer invoices (e-fiskalizimi)
 
-All personal data (clients, amounts, fees, date rules) is in `~/.albanian-invoices/config.json` (Windows: `%USERPROFILE%\.albanian-invoices\config.json`). It lives outside the skill, so skill updates never overwrite it and it never ends up in a repo.
+All personal data (clients, amounts, fees, date rules) is in `.albanian-invoices/config.json`, placed next to where these skills are installed: in the folder where Claude is running if the skills are project-level (`.claude/skills`), or in the user's home (`~/.albanian-invoices/config.json`, Windows: `%USERPROFILE%\.albanian-invoices\config.json`) if the skills are user-level. It lives outside the skill folders, so skill updates never overwrite it.
+- Look only at that one location; don't search other folders.
 - No config there: stop and run the `invoice-setup` skill first.
 - This file contains NO personal data: never write any into it.
 

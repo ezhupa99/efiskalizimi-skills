@@ -6,7 +6,10 @@ description: One-time setup for the Albanian freelancer invoice automation - set
 # Invoice setup
 
 Goal: make the `albanian-invoices` skill work for THIS user. Everything personal goes to
-`~/.albanian-invoices/config.json` in the user's home folder (Windows: `%USERPROFILE%\.albanian-invoices\config.json`). Create the folder if needed. It stays outside the skill folder so updates never overwrite it and it is never shared. Never write personal data into any SKILL.md.
+`.albanian-invoices/config.json`, placed next to where the skills are installed:
+- **Skills are project-level** (in `.claude/skills` of the folder where Claude is running): write `<that folder>/.albanian-invoices/config.json`.
+- **Skills are user-level** (in `~/.claude/skills`): write `~/.albanian-invoices/config.json` (Windows: `%USERPROFILE%\.albanian-invoices\config.json`).
+Create the folder if needed. It stays outside the skill folders so updates never overwrite it. Never write personal data into any SKILL.md. Tell the user once that their details are saved in a config file, and where.
 
 ## How to ask
 - Ask every question with the **AskUserQuestion** tool: one topic per question, with clear options. Free-text answers (names, addresses, amounts) go through its "Other" option. Use plain chat only if the tool isn't available.
@@ -44,7 +47,7 @@ Nothing else works without it. Try to open a tab with the Playwright browser too
    - Short name for product names (suggest one from the client name, e.g. "Acme").
 3. **Transfer fee**: ask "Do you pay a transfer fee when this client pays you? Most companies make the freelancer pay it." Options: "Yes, I pay it" (then ask the amount, in the client's currency) / "No, the client covers it" / "We split it" (then ask the amount the user pays).
    - The amount the user pays is ALWAYS deducted from the invoice total: the portal invoice equals what actually arrives in the bank account.
-4. **Dates**: payment date rule (e.g. "end of current month", "20th of next month") and supply date rule (usually "end of current month"). Offer these as options.
+4. **Dates**: ask only for the payment date rule (e.g. "end of current month", "20th of next month"), offered as options. **Never ask about the supply date**: it is always the end of the month. Write `"supply_date_rule": "end of current month"` without asking or mentioning it.
 5. **Client invoice** (optional): "Do you also send this client your own invoice (Canva, Word, an invoicing app)?" Options: None / Canva / Other.
    - Canva: ask them to open the design while logged in to Canva, and confirm you can see it. Ask for the design name, current invoice number, and invoice date rule. The `client-invoice-canva` skill confirms the fields on its first run.
    - Other: save the tool name; that part stays manual.
@@ -62,6 +65,7 @@ All of these are configurable. If you ever want something different, just tell m
 If they ask for a change (now or later), update `portal_defaults` or add a per-client override.
 
 ## Part 5 - Write and confirm
-- Write `~/.albanian-invoices/config.json` in the shape of `config.example.json` (in the `albanian-invoices` skill folder). Set `"first_run": true`.
+- Write `.albanian-invoices/config.json` (project folder or home, as described above) in the shape of `config.example.json` (in the `albanian-invoices` skill folder). Set `"first_run": true`.
+- **Don't search for an existing config.** Never look through the user's home or profile folders for a previous config or state. Just write the file at the location above. Only read the config when the user explicitly asks to add or edit a client, and then open it directly at that location.
 - Show a readable summary per client (no raw JSON unless asked) and a sample calculation, e.g. "3000 USD - 10 USD fee = 2990 USD on the invoice".
 - Confirm with AskUserQuestion. Then say: "When you want to invoice, open e-fiskalizimi, log in, and tell me 'do my monthly invoices'. The first run is guided: I'll confirm each step with you."

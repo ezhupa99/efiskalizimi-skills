@@ -5,7 +5,7 @@ description: Optional add-on to albanian-invoices - update the user's own Canva 
 
 # Client invoice in Canva (optional)
 
-Reads the client's `client_invoice` block from `~/.albanian-invoices/config.json` (written by `invoice-setup`).
+Reads the client's `client_invoice` block from `.albanian-invoices/config.json` (written by `invoice-setup`, in the project folder for project-level skills or in the home folder for user-level skills).
 The user is logged in to Canva with their own account; never log in for them.
 
 ## Rules
