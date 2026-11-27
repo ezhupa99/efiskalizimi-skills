@@ -37,8 +37,10 @@ Nothing else works without it. Try to open a tab with the Playwright browser too
 2. **E-fiskalizimi ("self-care")**: open https://efiskalizimi-app.tatime.gov.al/self-care/#/login?returnUrl=%2Fdashboard . Tell the user: "Please log in with your own e-Albania credentials. I never log in for you." Wait, then confirm the logged-in menu (Faturat, Te dhenat e tatimpaguesit) is visible.
 
 ## Part 3 - Clients (repeat per client)
-1. **Ask for a previous invoice first**: "Do you have an invoice you already issued to this client (a PDF or screenshot from e-fiskalizimi, or the invoice you send the client)? Drag it into the chat or give me the file path, and I'll read the details from it."
-   - **Yes**: read it and extract the client's legal name, tax/registration ID, country, city, address, currency, and the amount or price per hour/day. Ignore the user's own details. Show what you found and confirm with AskUserQuestion ("Correct" / "Something is wrong"). Ask only for what's missing.
+1. **Ask for a previous invoice first**: "Do you have an invoice you already issued to this client (a PDF or screenshot from e-fiskalizimi, or the invoice you send the client)? Drag it into the chat or give me the file path, and I'll read the client details and billing type (flat rate or hourly) from it, so you don't have to type them. I won't copy the invoice itself."
+   - **Yes**: read it only to save the user from typing the client details by hand. Extract the client's legal name, tax/registration ID, country, city, address, currency, and whether billing is a flat rate or per hour/day (with the price per unit, if hourly/daily). Ignore the user's own details.
+     - **Never treat the sample as literal.** It is one past invoice, not a template to copy. Don't copy its line items, quantity, period, dates, invoice number or one-off amounts, and don't assume the next invoice looks the same. Use it only to understand who the client is and how they are billed.
+     - Show what you found and confirm with AskUserQuestion ("Correct" / "Something is wrong"). Ask only for what's missing.
    - **No**: ask for each field.
 2. Fields needed:
    - Legal name, tax/registration ID, country (as written in the portal dropdown, in Albanian, e.g. "Gjermani", "Shtetet e Bashkuara te Amerikes"), city, address.
